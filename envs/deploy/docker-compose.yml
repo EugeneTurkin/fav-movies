@@ -1,0 +1,36 @@
+name: fav-movies-deploy
+
+services:
+  postgres:
+    image: postgres:16.1-alpine
+    healthcheck:
+      # see: https://github.com/peter-evans/docker-compose-healthcheck#waiting-for-postgresql-to-be-healthy
+      test: [ "CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 5s
+      retries: 10
+    env_file:
+      - .env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: ../..  # path from the current file to the project root dir
+      dockerfile: envs/deploy/Dockerfile  # path from the project root dir to the Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - FAV_MOVIES_ENV=deploy
+    volumes:
+      - .env:/app/envs/deploy/.env
+    entrypoint: |
+      bash -c "
+        alembic upgrade head
+        uvicorn src.app:app --host 0.0.0.0 --port 8000
+      "
+
+volumes:
+  postgres:

@@ -1,0 +1,14 @@
+name: fav-movies-test
+
+services:
+  postgres:
+    image: postgres:16.1-alpine
+    ports:
+      - "5433:5432"
+    env_file:
+      - .env  # path to .env file relative to the current file directory
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres:

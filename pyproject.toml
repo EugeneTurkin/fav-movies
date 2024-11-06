@@ -1,0 +1,48 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+authors = ["Eugene Turkin <eugeneturkin@gmail.com>"]
+description = ""
+name = "fav-movies"
+packages = []
+readme = "README.md"
+version = "0.1.0"
+
+
+[tool.poetry.dependencies]
+python = "3.11.*"
+
+
+[tool.poetry.group.app]
+optional = true
+
+
+[tool.poetry.group.app.dependencies]
+aiohttp = "3.10.10"
+alembic = {version = "1.13.3", extras = ["asyncio,tz"]}
+asyncpg = "0.30.0"
+fastapi = {version = "0.115.4", extras = ["all"]}
+pydantic = "2.9.2"
+pyjwt = "2.9.0"
+sqlalchemy = {extras = ["asyncio"], version = "2.0.36"}
+
+
+[tool.poetry.group.lint]
+optional = true
+
+
+[tool.poetry.group.lint.dependencies]
+mypy = "1.13.0"
+ruff = "0.7.2"
+
+
+[tool.poetry.group.test]
+optional = true
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "8.3.3"
+pytest-env = "1.1.5"

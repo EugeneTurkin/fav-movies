@@ -1,0 +1,2 @@
+# to prevent our secrets to be pushed to dockerhub accidentally
+envs/deploy/.env
